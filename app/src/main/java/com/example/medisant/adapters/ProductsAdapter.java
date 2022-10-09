@@ -10,15 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medisant.R;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductViewHolder> {
 
-    private LinkedList<String> productsList;
+    private JSONArray productsList;
 
-    public ProductsAdapter(LinkedList<String> productsList) {
+    public ProductsAdapter(JSONArray productsList) {
         this.productsList = productsList;
     }
 
@@ -41,7 +43,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     @Override
     public int getItemCount() {
-        return this.productsList.size();
+        return this.productsList.length();
     }
 
 

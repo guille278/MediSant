@@ -11,8 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.medisant.adapters.ProductsAdapter;
+import com.example.medisant.config.Config;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
@@ -75,23 +81,26 @@ public class ProductsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView rvProducts = view.findViewById(R.id.rv_products);
-        LinkedList<String> list = new LinkedList<>();
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_products);
         shimmerFrameLayout.startShimmer();
-        /*list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        list.add("guillermo");
-        rvProducts.setAdapter(new ProductsAdapter(list));
-        rvProducts.setLayoutManager(new LinearLayoutManager(view.getContext()));*/
+
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                Config.API_URL+"/products",
+                null,
+                response ->{
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    rvProducts.setAdapter(new ProductsAdapter(response));
+                },
+                error -> {
+                    Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+        );
+        queue.add(jsonArrayRequest);
+        rvProducts.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
     }
 }
