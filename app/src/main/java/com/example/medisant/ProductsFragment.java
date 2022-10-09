@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.medisant.adapters.ProductsAdapter;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -75,7 +76,9 @@ public class ProductsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView rvProducts = view.findViewById(R.id.rv_products);
         LinkedList<String> list = new LinkedList<>();
-        list.add("guillermo");
+        ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_products);
+        shimmerFrameLayout.startShimmer();
+        /*list.add("guillermo");
         list.add("guillermo");
         list.add("guillermo");
         list.add("guillermo");
@@ -88,7 +91,7 @@ public class ProductsFragment extends Fragment {
         list.add("guillermo");
         list.add("guillermo");
         rvProducts.setAdapter(new ProductsAdapter(list));
-        rvProducts.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        rvProducts.setLayoutManager(new LinearLayoutManager(view.getContext()));*/
 
     }
 }
