@@ -10,17 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medisant.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductViewHolder> {
 
-    private JSONArray productsList;
+    private final JSONArray productsList;
 
     public ProductsAdapter(JSONArray productsList) {
         this.productsList = productsList;
@@ -50,6 +47,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         try {
+            Picasso.get().load(productsList.getJSONObject(position).getString("image")).into(holder.productImage);
             holder.productName.setText(productsList.getJSONObject(position).getString("name"));
             holder.productShortDesc.setText(productsList.getJSONObject(position).getString("short_description"));
             holder.productPrice.setText("$"+productsList.getJSONObject(position).getString("price"));
