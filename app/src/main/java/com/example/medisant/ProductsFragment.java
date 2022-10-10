@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,12 +86,13 @@ public class ProductsFragment extends Fragment {
         shimmerFrameLayout.startShimmer();
 
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
                 Request.Method.GET,
-                Config.API_URL+"/products",
+                Config.URL + "api/products",
                 null,
-                response ->{
+                response -> {
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                     rvProducts.setAdapter(new ProductsAdapter(response));
@@ -102,5 +104,26 @@ public class ProductsFragment extends Fragment {
         queue.add(jsonArrayRequest);
         rvProducts.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            shimmerFrameLayout.startShimmer();
+            shimmerFrameLayout.setVisibility(View.VISIBLE);
+            rvProducts.setVisibility(View.GONE);
+            JsonArrayRequest jsonArrayRefresh = new JsonArrayRequest(
+                    Request.Method.GET,
+                    Config.URL + "api/products",
+                    null,
+                    response -> {
+                        swipeRefreshLayout.setRefreshing(false);
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        rvProducts.setVisibility(View.VISIBLE);
+                        rvProducts.setAdapter(new ProductsAdapter(response));
+                    },
+                    error -> {
+                        Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+            );
+            queue.add(jsonArrayRefresh);
+        });
     }
 }

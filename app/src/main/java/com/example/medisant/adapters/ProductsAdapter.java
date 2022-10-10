@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medisant.R;
+import com.example.medisant.config.Config;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -47,10 +48,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         try {
-            Picasso.get().load(productsList.getJSONObject(position).getString("image")).into(holder.productImage);
+            Picasso.get().load(Config.URL + productsList.getJSONObject(position).getString("image")).into(holder.productImage);
             holder.productName.setText(productsList.getJSONObject(position).getString("name"));
             holder.productShortDesc.setText(productsList.getJSONObject(position).getString("short_description"));
-            holder.productPrice.setText("$"+productsList.getJSONObject(position).getString("price"));
+            holder.productPrice.setText("$" + productsList.getJSONObject(position).getString("price"));
             holder.productAvailable.setText("Disponibles: " + productsList.getJSONObject(position).getString("available"));
         } catch (JSONException e) {
             e.printStackTrace();
