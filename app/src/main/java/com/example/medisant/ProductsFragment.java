@@ -1,5 +1,7 @@
 package com.example.medisant;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.medisant.adapters.ProductsAdapter;
 import com.example.medisant.config.Config;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -83,6 +86,7 @@ public class ProductsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView rvProducts = view.findViewById(R.id.rv_products);
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_products);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.btn_contact);
         shimmerFrameLayout.startShimmer();
 
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
@@ -124,6 +128,15 @@ public class ProductsFragment extends Fragment {
                     }
             );
             queue.add(jsonArrayRefresh);
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://wa.me/+5213323838752"));
+                startActivity(intent);
+            }
         });
     }
 }

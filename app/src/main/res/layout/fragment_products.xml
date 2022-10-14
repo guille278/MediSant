@@ -6,45 +6,82 @@
     android:layout_height="match_parent"
     tools:context=".ProductsFragment">
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_products"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-            <include layout="@layout/shimmer_product_card" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#25D366"
+        android:clickable="true"
+        android:contentDescription="Ayuda"
+        android:src="@drawable/ic_baseline_help_outline_24"
+        android:tooltipText="Ayuda"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linearLayoutCompat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_products"
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_products"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/shimmer_product_card" />
+
+                <include layout="@layout/shimmer_product_card" />
+
+                <include layout="@layout/shimmer_product_card" />
+
+                <include layout="@layout/shimmer_product_card" />
+
+                <include layout="@layout/shimmer_product_card" />
+
+                <include layout="@layout/shimmer_product_card" />
+
+                <include layout="@layout/shimmer_product_card" />
+
+                <include layout="@layout/shimmer_product_card" />
+
+                <include layout="@layout/shimmer_product_card" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/shimmer_products" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/shimmer_products" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
