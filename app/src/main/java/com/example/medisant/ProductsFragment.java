@@ -1,6 +1,8 @@
 package com.example.medisant;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -26,8 +29,10 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,6 +89,8 @@ public class ProductsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
+        Toast.makeText(this.getContext(), sharedPreferences.getString("token", ""), Toast.LENGTH_SHORT).show();
         RecyclerView rvProducts = view.findViewById(R.id.rv_products);
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_products);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.btn_contact);
@@ -104,7 +111,16 @@ public class ProductsFragment extends Fragment {
                 error -> {
                     Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-        );
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", "Bearer " + sharedPreferences.getString("token", ""));
+                return headers;
+            }
+        };
         queue.add(jsonArrayRequest);
         rvProducts.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
