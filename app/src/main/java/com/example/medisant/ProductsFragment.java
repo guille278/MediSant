@@ -113,11 +113,7 @@ public class ProductsFragment extends Fragment {
         ) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", "Bearer " + sharedPreferences.getString("token", ""));
-                return headers;
+                return new Config().getHeaders(sharedPreferences.getString("token", ""));
             }
         };
         queue.add(jsonArrayRequest);
@@ -141,7 +137,12 @@ public class ProductsFragment extends Fragment {
                     error -> {
                         Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-            );
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    return new Config().getHeaders(sharedPreferences.getString("token", ""));
+                }
+            };
             queue.add(jsonArrayRefresh);
         });
 
