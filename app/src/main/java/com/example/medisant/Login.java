@@ -57,6 +57,7 @@ public class Login extends AppCompatActivity {
                         }
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
+                        finish();
                     },
                     error -> {
                         Toast.makeText(getApplicationContext(), "Credenciales invalidas!", Toast.LENGTH_SHORT).show();
