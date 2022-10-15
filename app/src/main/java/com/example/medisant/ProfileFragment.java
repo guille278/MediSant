@@ -1,12 +1,29 @@
 package com.example.medisant;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.medisant.config.Config;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,5 +77,39 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
+        Button button = view.findViewById(R.id.btn_logout);
+        button.setOnClickListener(view1 -> {
+            RequestQueue queue = Volley.newRequestQueue(view.getContext());
+            StringRequest stringRequest = new StringRequest(
+                    Request.Method.POST,
+                    Config.URL + "api/auth/logout",
+                    listener -> {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear().apply();
+                        Intent intent = new Intent(this.getContext(), Login.class);
+                        startActivity(intent);
+                        this.getActivity().finish();
+                    },
+                    error -> {
+                        Toast.makeText(this.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+            ) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Accept", "application/json");
+                    headers.put("Authorization", "Bearer " + sharedPreferences.getString("token", ""));
+                    return headers;
+                }
+            };
+            queue.add(stringRequest);
+        });
     }
 }
