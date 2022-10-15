@@ -90,7 +90,6 @@ public class ProductsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
-        Toast.makeText(this.getContext(), sharedPreferences.getString("token", ""), Toast.LENGTH_SHORT).show();
         RecyclerView rvProducts = view.findViewById(R.id.rv_products);
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_products);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.btn_contact);
