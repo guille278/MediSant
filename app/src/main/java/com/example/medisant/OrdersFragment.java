@@ -35,7 +35,7 @@ public class OrdersFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView rvOrders = view.findViewById(R.id.rv_orders);
         LinkedList<Order> orders = new LinkedList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 1; i < 20; i++) {
             orders.add(new Order(i, 1, 99.99, "12/11/9999", "12/11/9999"));
         }
         rvOrders.setAdapter(new OrdersAdapter(orders));
