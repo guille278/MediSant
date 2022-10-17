@@ -1,12 +1,15 @@
 package com.example.medisant.adapters;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medisant.R;
@@ -24,7 +27,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         this.productsList = productsList;
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder {
+    public class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView productImage;
         TextView productName, productShortDesc, productPrice, productAvailable;
 
@@ -32,9 +35,22 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             super(itemView);
             productImage = itemView.findViewById(R.id.iv_product_image);
             productName = itemView.findViewById(R.id.tv_product_name);
-            productShortDesc = itemView.findViewById(R.id.tv_product_description);
+            productShortDesc = itemView.findViewById(R.id.tv_product_short_description);
             productPrice = itemView.findViewById(R.id.tv_product_price);
             productAvailable = itemView.findViewById(R.id.tv_product_available);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Bundle bundle = new Bundle();
+            try {
+                bundle.putString("id", productsList.getJSONObject(getAdapterPosition()).getString("id"));
+                Navigation.findNavController(view).navigate(R.id.detailProductFragment, bundle);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
