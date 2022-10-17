@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Config {
-    private static final String HOST = "192.168.1.73";
+    private static final String HOST = "192.168.1.75";
     public static final String URL = "http://"+HOST+"/proyecto-9no-web/medisant-admin/public/";
 
     public Map<String, String> getHeaders(String token){
