@@ -15,9 +15,10 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="#25D366"
         android:clickable="true"
-        android:contentDescription="Ayuda"
-        android:src="@drawable/ic_baseline_help_outline_24"
-        android:tooltipText="Ayuda"
+        android:contentDescription="Contacto"
+        android:foreground="@drawable/icons8_whatsapp_24"
+        android:tooltipText="Contacto"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

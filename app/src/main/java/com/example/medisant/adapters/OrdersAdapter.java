@@ -1,8 +1,12 @@
 package com.example.medisant.adapters;
 
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,26 +16,45 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medisant.R;
 import com.example.medisant.models.Order;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
-    private final LinkedList<Order> orders;
+    private final JSONArray orders;
 
-    public OrdersAdapter(LinkedList<Order> orders) {
+    public OrdersAdapter(JSONArray orders) {
         this.orders = orders;
     }
 
-    public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView orderDate, orderTotal, orderStatus;
+
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
+            orderDate = itemView.findViewById(R.id.tv_order_date);
+            orderTotal = itemView.findViewById(R.id.tv_order_total);
+            orderStatus = itemView.findViewById(R.id.tv_order_status);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(view.getContext(), ""+orders.get(getAdapterPosition()).getId(), Toast.LENGTH_SHORT).show();
-            Navigation.findNavController(view).navigate(R.id.detailOrderFragment);
+            Bundle bundle = new Bundle();
+            try {
+                bundle.putString("id", orders.getJSONObject(getAdapterPosition()).getString("id"));
+                Navigation.findNavController(view).navigate(R.id.detailOrderFragment, bundle);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -44,11 +67,37 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
     @Override
     public void onBindViewHolder(@NonNull OrdersAdapter.OrderViewHolder holder, int position) {
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                OffsetDateTime time = OffsetDateTime.ofInstant(Instant.parse(this.orders.getJSONObject(position).getString("created_at")), ZoneId.systemDefault());
+                holder.orderDate.setText("Fecha del pedido: " + DateTimeFormatter.ofPattern("dd MMMM yyyy").format(time));
+                holder.orderTotal.setText("Total: $" + this.orders.getJSONObject(position).getString("total"));
+                switch (this.orders.getJSONObject(position).getInt("status")) {
+                    case 1:
+                        holder.orderStatus.setTextColor(Color.parseColor("#0398fc"));
+                        holder.orderStatus.setText("Recibido");
+                        break;
+                    case 2:
+                        holder.orderStatus.setTextColor(Color.parseColor("#fcd703"));
+                        holder.orderStatus.setText("En camino");
+                        break;
+                    case 3:
+                        holder.orderStatus.setTextColor(Color.parseColor("#FF018786"));
+                        holder.orderStatus.setText("Entregado " + this.orders.getJSONObject(position).getString("delivered"));
+                        break;
+                    default:
+                        holder.orderStatus.setTextColor(Color.parseColor("#d40222"));
+                        holder.orderStatus.setText("Cancelado");
+                }
+            }
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return this.orders.size();
+        return this.orders.length();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.medisant;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,13 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.medisant.adapters.OrdersAdapter;
 import com.example.medisant.models.Order;
+
+import org.json.JSONArray;
 
 import java.util.LinkedList;
 
 public class OrdersFragment extends Fragment {
+
+    private String token;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -33,12 +43,23 @@ public class OrdersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("token", "");
         RecyclerView rvOrders = view.findViewById(R.id.rv_orders);
-        LinkedList<Order> orders = new LinkedList<>();
-        for (int i = 1; i < 20; i++) {
-            orders.add(new Order(i, 1, 99.99, "12/11/9999", "12/11/9999"));
-        }
-        rvOrders.setAdapter(new OrdersAdapter(orders));
+
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
+        JsonArrayRequest request = new Order().get(
+                listener ->{
+                    rvOrders.setAdapter(new OrdersAdapter((JSONArray) listener));
+
+                },
+                error -> {
+                    Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+
+                },
+                token
+        );
+        queue.add(request);
         rvOrders.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
     }

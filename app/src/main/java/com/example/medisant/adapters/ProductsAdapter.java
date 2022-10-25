@@ -46,7 +46,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             Bundle bundle = new Bundle();
             try {
                 bundle.putString("id", productsList.getJSONObject(getAdapterPosition()).getString("id"));
-                Navigation.findNavController(view).navigate(R.id.detailProductFragment, bundle);
+                Navigation.findNavController(view).navigate(R.id.action_productsFragment_to_detailProductFragment, bundle);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

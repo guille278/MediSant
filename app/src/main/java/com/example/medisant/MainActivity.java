@@ -2,6 +2,7 @@ package com.example.medisant;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,13 +24,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         SharedPreferences sharedPreferences = this.getSharedPreferences("token", MODE_PRIVATE);
         if (!sharedPreferences.contains("token")) {
             Intent intent = new Intent(this.getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
         }
+        Toolbar toolbar = findViewById(R.id.myToolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.menu_carrito:
+                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.cartFragment);
+                        break;
+                }
+                return false;
+            }
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 

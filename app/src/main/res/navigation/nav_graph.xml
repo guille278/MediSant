@@ -11,7 +11,11 @@
         tools:layout="@layout/fragment_products" >
         <action
             android:id="@+id/action_productsFragment_to_detailProductFragment"
-            app:destination="@id/detailProductFragment" />
+            app:destination="@id/detailProductFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/ordersFragment"
@@ -37,4 +41,14 @@
         android:name="com.example.medisant.DetailOrderFragment"
         android:label="fragment_detail_order"
         tools:layout="@layout/fragment_detail_order" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.example.medisant.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
+    <activity
+        android:id="@+id/login"
+        android:name="com.example.medisant.Login"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 </navigation>
