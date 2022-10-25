@@ -87,8 +87,20 @@ public class Order implements OrderInterface {
     }
 
     @Override
-    public JsonObjectRequest findOne(Response.Listener listener, Response.ErrorListener errorListener) {
-        return null;
+    public JsonObjectRequest findOne(Response.Listener listener, Response.ErrorListener errorListener, String token) {
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                Config.URL + Order.END_POINT + "/" + this.id,
+                null,
+                listener,
+                errorListener
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return new Config().getHeaders(token);
+            }
+        };
+        return request;
     }
 
     @Override

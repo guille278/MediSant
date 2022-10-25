@@ -1,5 +1,7 @@
 package com.example.medisant;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,8 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class DetailOrderFragment extends Fragment {
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.medisant.models.Order;
+import com.google.android.material.snackbar.Snackbar;
 
+public class DetailOrderFragment extends Fragment {
+    private String token;
 
     public DetailOrderFragment() {
         // Required empty public constructor
@@ -28,6 +36,20 @@ public class DetailOrderFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Toast.makeText(view.getContext(), ""+getArguments().getString("id"), Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("token", "");
+        Order order = new Order();
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
+        order.setId(Integer.valueOf(getArguments().getString("id")));
+        JsonObjectRequest request = order.findOne(
+                listener -> {
+                    Toast.makeText(view.getContext(), listener.toString(), Toast.LENGTH_LONG).show();
+                },
+                error -> {
+                    Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                },
+                token
+        );
+        queue.add(request);
     }
 }
