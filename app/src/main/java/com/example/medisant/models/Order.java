@@ -5,6 +5,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.medisant.config.Config;
 import com.example.medisant.models.interfaces.OrderInterface;
 
@@ -106,5 +107,21 @@ public class Order implements OrderInterface {
     @Override
     public JsonObjectRequest save(Response.Listener listener, Response.ErrorListener errorListener) {
         return null;
+    }
+
+    @Override
+    public StringRequest delete(Response.Listener listener, Response.ErrorListener errorListener, String token) {
+        StringRequest request = new StringRequest(
+                Request.Method.DELETE,
+                Config.URL + Order.END_POINT + "/" + this.id,
+                listener,
+                errorListener
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return new Config().getHeaders(token);
+            }
+        };
+        return request;
     }
 }
