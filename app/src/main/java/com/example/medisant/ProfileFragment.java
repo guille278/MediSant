@@ -13,14 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.medisant.config.Config;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,23 +88,55 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
-        Button button = view.findViewById(R.id.btn_logout);
-        button.setOnClickListener(view1 -> {
-            RequestQueue queue = Volley.newRequestQueue(view.getContext());
+        Button logout = view.findViewById(R.id.btn_logout);
+        Button edit = view.findViewById(R.id.btn_user_edit);
+        TextView userName = view.findViewById(R.id.tv_user_name);
+        TextView userEmail = view.findViewById(R.id.tv_user_email);
+        TextView userAddress = view.findViewById(R.id.tv_user_address);
+        TextView userCompany = view.findViewById(R.id.tv_user_company_name);
+        RequestQueue queue = Volley.newRequestQueue(view.getContext());
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                Config.URL + "api/profile",
+                null,
+                listener -> {
+                    JSONObject usuario = listener;
+                    try {
+                        userName.setText(usuario.getString("name"));
+                        userEmail.setText(usuario.getString("email"));
+                        userAddress.setText(usuario.getString("address"));
+                        userCompany.setText(usuario.getString("company_name"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return new Config().getHeaders(sharedPreferences.getString("token", ""));
+            }
+        };
+        queue.add(request);
+
+        logout.setOnClickListener(listener->{
             StringRequest stringRequest = new StringRequest(
                     Request.Method.POST,
                     Config.URL + "api/auth/logout",
-                    listener -> {
+                    response -> {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear().apply();
-                        Intent intent = new Intent(this.getContext(), Login.class);
+                        Intent intent = new Intent(view.getContext(), Login.class);
                         startActivity(intent);
                         this.getActivity().finish();
                     },
                     error -> {
-                        Toast.makeText(this.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-            ) {
+            ){
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     return new Config().getHeaders(sharedPreferences.getString("token", ""));
@@ -107,5 +144,11 @@ public class ProfileFragment extends Fragment {
             };
             queue.add(stringRequest);
         });
+
+        edit.setOnClickListener(listener->{
+            Toast.makeText(view.getContext(), "Editar perfil", Toast.LENGTH_SHORT).show();
+        });
+
+
     }
 }
