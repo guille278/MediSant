@@ -1,5 +1,6 @@
 package com.example.medisant;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -115,18 +116,27 @@ public class DetailOrderFragment extends Fragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringRequest request1 = order.delete(
-                        listener -> {
-                            Toast.makeText(view.getContext(), "Pedido cancelado exitosamente.", Toast.LENGTH_SHORT).show();
-                            Navigation.findNavController(view).navigate(R.id.ordersFragment);
-                        },
-                        error -> {
-                            Toast.makeText(view.getContext(), "Error al cancelar el pedido.", Toast.LENGTH_SHORT).show();
-                        },
-                        token
-                );
-                queue.add(request1);
+                AlertDialog.Builder alerta = new AlertDialog.Builder(getContext());
+                alerta.setTitle("Cancelar pedido");
+                alerta.setMessage("¿Estas seguro que deseas cancelar el pedido?");
+                alerta.setPositiveButton("Aceptar", (dialogInterface, i) -> {
+                    StringRequest request1 = order.delete(
+                            listener -> {
+                                Toast.makeText(view.getContext(), "Pedido cancelado exitosamente.", Toast.LENGTH_SHORT).show();
+                                Navigation.findNavController(view).navigate(R.id.ordersFragment);
+                            },
+                            error -> {
+                                Toast.makeText(view.getContext(), "Error al cancelar el pedido.", Toast.LENGTH_SHORT).show();
+                            },
+                            token
+                    );
+                    queue.add(request1);
+                });
+                AlertDialog dialog = alerta.create();
+                dialog.show();
             }
         });
+
+
     }
 }
