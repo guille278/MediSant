@@ -1,5 +1,6 @@
 package com.example.medisant.adapters;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,9 +31,11 @@ import java.util.LinkedList;
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
     private final JSONArray orders;
+    private Context mContext;
 
-    public OrdersAdapter(JSONArray orders) {
+    public OrdersAdapter(Context context, JSONArray orders) {
         this.orders = orders;
+        this.mContext=context;
     }
 
     public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -70,24 +73,24 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 OffsetDateTime time = OffsetDateTime.ofInstant(Instant.parse(this.orders.getJSONObject(position).getString("created_at")), ZoneId.systemDefault());
-                holder.orderDate.setText("Fecha del pedido: " + DateTimeFormatter.ofPattern("dd MMMM yyyy").format(time));
-                holder.orderTotal.setText("Total: $" + this.orders.getJSONObject(position).getString("total"));
+                holder.orderDate.setText(mContext.getString(R.string.order_date, DateTimeFormatter.ofPattern("dd MMMM yyyy").format(time)));
+                holder.orderTotal.setText(mContext.getString(R.string.order_total, this.orders.getJSONObject(position).getString("total")));
                 switch (this.orders.getJSONObject(position).getInt("status")) {
                     case 1:
                         holder.orderStatus.setTextColor(Color.parseColor("#0398fc"));
-                        holder.orderStatus.setText("Recibido");
+                        holder.orderStatus.setText(mContext.getString(R.string.order_state, "Recibido"));
                         break;
                     case 2:
                         holder.orderStatus.setTextColor(Color.parseColor("#fcd703"));
-                        holder.orderStatus.setText("En camino");
+                        holder.orderStatus.setText(mContext.getString(R.string.order_state, "En camino"));
                         break;
                     case 3:
                         holder.orderStatus.setTextColor(Color.parseColor("#FF018786"));
-                        holder.orderStatus.setText("Entregado " + this.orders.getJSONObject(position).getString("delivered"));
+                        holder.orderStatus.setText(mContext.getString(R.string.order_state_delivered, this.orders.getJSONObject(position).getString("delivered")));
                         break;
                     default:
                         holder.orderStatus.setTextColor(Color.parseColor("#d40222"));
-                        holder.orderStatus.setText("Cancelado");
+                        holder.orderStatus.setText(mContext.getString(R.string.order_state, "Cancelado"));
                 }
             }
 

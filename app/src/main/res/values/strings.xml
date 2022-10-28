@@ -12,4 +12,11 @@
     <string name="detail_order_subTotal">Subtotal: $%1$s</string>
     <string name="detail_order_total">Total: $%1$s</string>
     <string name="detail_order_btn_cancel">Cancelar pedido</string>
+
+    <string name="order_date">Fecha del pedido: %1$s</string>
+    <string name="order_total">Total: $%1$s</string>
+    <string name="order_state">%1$s</string>
+    <string name="order_state_delivered">Entregado %1$s</string>
+
+    
 </resources>
