@@ -27,7 +27,7 @@
             android:id="@+id/tv_product_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="product name"
+            android:text="@string/product_name"
             android:textStyle="bold"
             android:textSize="14sp" />
 
@@ -35,20 +35,20 @@
             android:id="@+id/tv_product_short_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="short description"
+            android:text="@string/product_short_desc"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/tv_product_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="precio"
+            android:text="@string/product_price"
             android:textSize="14sp" />
         <TextView
             android:id="@+id/tv_product_available"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="disponible"
+            android:text="@string/product_available"
             android:textAlignment="textEnd"
             android:textSize="12sp" />
 

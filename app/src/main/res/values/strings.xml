@@ -20,4 +20,11 @@
     <string name="order_state_delivered">Entregado %1$s</string>
 
     <string name="product_whatsapp_tooltip">Contacto</string>
+
+    <string name="product_name">%1$s</string>
+    <string name="product_short_desc">%1$s</string>
+    <string name="product_price">$%1$s</string>
+    <string name="product_available">Disponible: %1$s</string>
+
+
 </resources>

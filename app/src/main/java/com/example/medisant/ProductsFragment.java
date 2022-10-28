@@ -59,7 +59,7 @@ public class ProductsFragment extends Fragment {
                 response -> {
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
-                    rvProducts.setAdapter(new ProductsAdapter((JSONArray) response));
+                    rvProducts.setAdapter(new ProductsAdapter(view.getContext(), (JSONArray) response));
                 },
                 error -> {
                     Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -79,7 +79,7 @@ public class ProductsFragment extends Fragment {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
                         rvProducts.setVisibility(View.VISIBLE);
-                        rvProducts.setAdapter(new ProductsAdapter((JSONArray) response));
+                        rvProducts.setAdapter(new ProductsAdapter(view.getContext(),(JSONArray) response));
                     },
                     error -> {
                         Toast.makeText(view.getContext(), "Error al recargar catalogo", Toast.LENGTH_SHORT).show();
