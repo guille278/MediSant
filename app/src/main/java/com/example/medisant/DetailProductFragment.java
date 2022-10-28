@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class DetailProductFragment extends Fragment {
         TextView productLongDesc = view.findViewById(R.id.tv_product_long_description);
         TextView productPrice = view.findViewById(R.id.tv_product_price);
         TextView productAvailable = view.findViewById(R.id.tv_product_available);
+        Button btnAgregarCarrito = view.findViewById(R.id.btn_agregar_carrito);
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
         product.setId(Integer.parseInt(getArguments().getString("id")));
@@ -75,5 +77,14 @@ public class DetailProductFragment extends Fragment {
                 token
         );
         queue.add(request);
+
+        btnAgregarCarrito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Agregar...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 }
