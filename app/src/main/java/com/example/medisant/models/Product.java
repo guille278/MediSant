@@ -13,6 +13,15 @@ import java.util.Map;
 public class Product implements ProductInterface {
     private static final String END_POINT = "api/products";
     private int id;
+    private int available;
+
+    public int getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(int available) {
+        this.available = available;
+    }
 
     public int getId() {
         return id;

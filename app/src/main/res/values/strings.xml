@@ -2,4 +2,6 @@
     <string name="app_name">MediSant</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_not_available">No contamos con suficiente producto en almacén</string>
+    <string name="error_empty_quantity">La cantidad de productos debe ser mayor a cero.</string>
 </resources>
