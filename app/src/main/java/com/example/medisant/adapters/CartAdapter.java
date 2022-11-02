@@ -104,9 +104,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                                         Request.Method.DELETE,
                                         Config.URL + "api/cart/" + items.getJSONObject(getAdapterPosition()).getString("id"),
                                         listener -> {
-
                                             View rootView = ((Activity) mContext).getWindow().getDecorView().findViewById(android.R.id.content);
                                             TextView orderTotal = rootView.findViewById(R.id.tv_order_total);
+                                            Button makeOrder = rootView.findViewById(R.id.btn_make_order);
                                             items.remove(getAdapterPosition());
                                             float total = 0;
                                             for (int j = 0; j < items.length(); j++) {
@@ -119,6 +119,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                                             orderTotal.setText("Total: " + NumberFormat.getCurrencyInstance(Locale.US).format(total));
                                             notifyItemRemoved(getAdapterPosition());
                                             Toast.makeText(mContext, "Producto eliminado.", Toast.LENGTH_SHORT).show();
+                                            if (items.length() <= 0){
+                                                makeOrder.setEnabled(false);
+                                            }
                                         },
                                         error -> {
                                             Toast.makeText(mContext, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();

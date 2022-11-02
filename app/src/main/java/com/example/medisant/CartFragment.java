@@ -69,16 +69,20 @@ public class CartFragment extends Fragment {
                 listener -> {
                     rvCart.setAdapter(new CartAdapter((JSONArray) listener, view.getContext()));
                     JSONArray data = (JSONArray) listener;
-                    float total = 0;
-                    for (int i = 0; i < data.length(); i++) {
-                        try {
-                            total += data.getJSONObject(i).getDouble("price") * data.getJSONObject(i).getJSONObject("pivot").getInt("quantity");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    if (data.length() > 0) {
+                        float total = 0;
+                        for (int i = 0; i < data.length(); i++) {
+                            try {
+                                total += data.getJSONObject(i).getDouble("price") * data.getJSONObject(i).getJSONObject("pivot").getInt("quantity");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
+                        order.setTotal(total);
+                        makeOrder.setEnabled(true);
                     }
-                    order.setTotal(total);
                     orderTotal.setText("Total: " + NumberFormat.getCurrencyInstance(Locale.US).format(order.getTotal()));
+
                 },
                 error -> {
                     Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -93,38 +97,41 @@ public class CartFragment extends Fragment {
         makeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                JSONObject data = new JSONObject();
-                try {
-                    data.put("total", order.getTotal());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                JsonObjectRequest request1 = new JsonObjectRequest(
-                        Request.Method.POST,
-                        Config.URL + "api/orders",
-                        data,
-                        listener -> {
-                            AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-                            alert.setView(LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_confirmation, null));
-                            alert.setPositiveButton("Ver pedidos", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Navigation.findNavController(view).navigate(R.id.ordersFragment);
-                                }
-                            });
-                            alert.create().show();
-                        },
-                        error -> {
-                            Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                ) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+                alert.setTitle("Confirmación");
+                alert.setMessage("¿Desea realizar el pedido?");
+                alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        return new Config().getHeaders(token);
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        JsonObjectRequest request1 = new JsonObjectRequest(
+                                Request.Method.POST,
+                                Config.URL + "api/orders",
+                                null,
+                                listener -> {
+                                    AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+                                    alert.setView(LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_confirmation, null));
+                                    alert.setPositiveButton("Ver pedidos", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Navigation.findNavController(view).navigate(R.id.ordersFragment);
+                                        }
+                                    });
+                                    alert.create().show();
+                                },
+                                error -> {
+                                    Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                        ) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                return new Config().getHeaders(token);
+                            }
+                        };
+                        queue.add(request1);
                     }
-                };
-                queue.add(request1);
+                });
+                alert.setNegativeButton("Cancelar", null);
+                alert.create().show();
             }
         });
 
