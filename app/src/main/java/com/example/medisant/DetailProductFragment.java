@@ -31,6 +31,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class DetailProductFragment extends Fragment {
 
     private String token;
@@ -74,8 +77,8 @@ public class DetailProductFragment extends Fragment {
                         productName.setText(data.getString("name"));
                         productShortDesc.setText(data.getString("short_description"));
                         productLongDesc.setText(data.getString("long_description"));
-                        productPrice.setText("Precio: $" + data.getString("price"));
-                        productAvailable.setText("Displonible: " + data.getString("available"));
+                        productPrice.setText("Precio: " + NumberFormat.getCurrencyInstance(Locale.US).format(data.getDouble("price")));
+                        productAvailable.setText(view.getResources().getString(R.string.product_available, data.getString("available")));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

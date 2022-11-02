@@ -20,6 +20,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductViewHolder> {
 
     private final JSONArray productsList;
@@ -70,7 +73,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             Picasso.get().load(Config.URL + productsList.getJSONObject(position).getString("image")).into(holder.productImage);
             holder.productName.setText(productsList.getJSONObject(position).getString("name"));
             holder.productShortDesc.setText(productsList.getJSONObject(position).getString("short_description"));
-            holder.productPrice.setText(mContext.getString(R.string.product_price, productsList.getJSONObject(position).getString("price")));
+            holder.productPrice.setText(NumberFormat.getCurrencyInstance(Locale.US).format(productsList.getJSONObject(position).getDouble("price")));
             holder.productAvailable.setText(mContext.getString(R.string.product_available, productsList.getJSONObject(position).getString("available")));
         } catch (JSONException e) {
             e.printStackTrace();

@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Map;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
@@ -115,7 +116,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                                                     e.printStackTrace();
                                                 }
                                             }
-                                            orderTotal.setText("Total: " + NumberFormat.getCurrencyInstance().format(total));
+                                            orderTotal.setText("Total: " + NumberFormat.getCurrencyInstance(Locale.US).format(total));
                                             notifyItemRemoved(getAdapterPosition());
                                             Toast.makeText(mContext, "Producto eliminado.", Toast.LENGTH_SHORT).show();
                                         },

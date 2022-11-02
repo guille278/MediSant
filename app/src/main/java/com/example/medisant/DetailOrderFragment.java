@@ -33,6 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class DetailOrderFragment extends Fragment {
     private String token;
 
@@ -94,12 +97,12 @@ public class DetailOrderFragment extends Fragment {
                                 progressBar.setProgress(0);
                                 btnCancel.setVisibility(View.GONE);
                         }
-                        orderTotal.setText(getResources().getString(R.string.detail_order_total, detailOrder.getString("total")));
+                        orderTotal.setText(getResources().getString(R.string.detail_order_total, NumberFormat.getCurrencyInstance(Locale.US).format(detailOrder.getDouble("total"))));
                         int subtotal = 0;
                         for (int i = 0; i < detailOrder.getJSONArray("products").length(); i++) {
                             subtotal += detailOrder.getJSONArray("products").getJSONObject(i).getJSONObject("pivot").getDouble("quantity") * detailOrder.getJSONArray("products").getJSONObject(i).getJSONObject("pivot").getDouble("subtotal");
                         }
-                        orderSubtotal.setText(getResources().getString(R.string.detail_order_subTotal, String.valueOf(subtotal)));
+                        orderSubtotal.setText(getResources().getString(R.string.detail_order_subTotal, NumberFormat.getCurrencyInstance(Locale.US).format(subtotal)));
                         rvDetailOrder.setAdapter(new OrdersDetailAdapter(detailOrder.getJSONArray("products")));
                     } catch (JSONException e) {
                         e.printStackTrace();

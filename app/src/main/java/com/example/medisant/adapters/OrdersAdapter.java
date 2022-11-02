@@ -21,12 +21,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.sql.Timestamp;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
@@ -74,7 +76,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 OffsetDateTime time = OffsetDateTime.ofInstant(Instant.parse(this.orders.getJSONObject(position).getString("created_at")), ZoneId.systemDefault());
                 holder.orderDate.setText(mContext.getString(R.string.order_date, DateTimeFormatter.ofPattern("dd MMMM yyyy").format(time)));
-                holder.orderTotal.setText(mContext.getString(R.string.order_total, this.orders.getJSONObject(position).getString("total")));
+                holder.orderTotal.setText(mContext.getString(R.string.order_total, NumberFormat.getCurrencyInstance(Locale.US).format(this.orders.getJSONObject(position).getDouble("total"))));
                 switch (this.orders.getJSONObject(position).getInt("status")) {
                     case 1:
                         holder.orderStatus.setTextColor(Color.parseColor("#0398fc"));

@@ -17,6 +17,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapter.OrderDetailViewHolder> {
 
     private JSONArray productsList;
@@ -51,7 +54,7 @@ public class OrdersDetailAdapter extends RecyclerView.Adapter<OrdersDetailAdapte
             Picasso.get().load(Config.URL + productsList.getJSONObject(position).getString("image")).into(holder.productImage);
             holder.productName.setText(productsList.getJSONObject(position).getString("name"));
             holder.productShortDesc.setText(productsList.getJSONObject(position).getString("short_description"));
-            holder.productPrice.setText("$" + productsList.getJSONObject(position).getJSONObject("pivot").getDouble("subtotal"));
+            holder.productPrice.setText(NumberFormat.getCurrencyInstance(Locale.US).format(productsList.getJSONObject(position).getJSONObject("pivot").getDouble("subtotal")));
             holder.productQuantity.setText("X" + productsList.getJSONObject(position).getJSONObject("pivot").getString("quantity"));
         } catch (JSONException e) {
             e.printStackTrace();
