@@ -60,7 +60,6 @@ public class DetailOrderFragment extends Fragment {
         TextView orderUpdated = view.findViewById(R.id.tv_order_updated);
         TextView orderStatus = view.findViewById(R.id.tv_order_status);
         ProgressBar progressBar = view.findViewById(R.id.progressBar);
-        TextView orderSubtotal = view.findViewById(R.id.tv_order_subtotal);
         TextView orderTotal = view.findViewById(R.id.tv_order_total);
         Button btnCancel = view.findViewById(R.id.btn_cancel_order);
         Order order = new Order();
@@ -79,30 +78,26 @@ public class DetailOrderFragment extends Fragment {
                                 orderStatus.setTextColor(Color.parseColor("#0398fc"));
                                 orderStatus.setText(getResources().getString(R.string.detail_order_state, "Recibido"));
                                 progressBar.setProgress(20);
+                                btnCancel.setVisibility(View.VISIBLE);
                                 break;
                             case 2:
                                 orderStatus.setTextColor(Color.parseColor("#fcd703"));
                                 orderStatus.setText(getResources().getString(R.string.detail_order_state, "En camino"));
                                 progressBar.setProgress(50);
+                                btnCancel.setVisibility(View.VISIBLE);
                                 break;
                             case 3:
                                 orderStatus.setTextColor(Color.parseColor("#FF018786"));
                                 orderStatus.setText(getResources().getString(R.string.detail_order_state_delivered, detailOrder.getString("delivered")));
                                 progressBar.setProgress(100);
-                                btnCancel.setVisibility(View.GONE);
                                 break;
                             default:
                                 orderStatus.setTextColor(Color.parseColor("#d40222"));
                                 orderStatus.setText(getResources().getString(R.string.detail_order_state_cancelled, detailOrder.getString("cancelled")));
                                 progressBar.setProgress(0);
-                                btnCancel.setVisibility(View.GONE);
+
                         }
                         orderTotal.setText(getResources().getString(R.string.detail_order_total, NumberFormat.getCurrencyInstance(Locale.US).format(detailOrder.getDouble("total"))));
-                        int subtotal = 0;
-                        for (int i = 0; i < detailOrder.getJSONArray("products").length(); i++) {
-                            subtotal += detailOrder.getJSONArray("products").getJSONObject(i).getJSONObject("pivot").getDouble("quantity") * detailOrder.getJSONArray("products").getJSONObject(i).getJSONObject("pivot").getDouble("subtotal");
-                        }
-                        orderSubtotal.setText(getResources().getString(R.string.detail_order_subTotal, NumberFormat.getCurrencyInstance(Locale.US).format(subtotal)));
                         rvDetailOrder.setAdapter(new OrdersDetailAdapter(detailOrder.getJSONArray("products")));
                     } catch (JSONException e) {
                         e.printStackTrace();
