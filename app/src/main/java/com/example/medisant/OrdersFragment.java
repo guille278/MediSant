@@ -50,7 +50,7 @@ public class OrdersFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
         JsonArrayRequest request = new Order().get(
                 listener ->{
-                    rvOrders.setAdapter(new OrdersAdapter((JSONArray) listener));
+                    rvOrders.setAdapter(new OrdersAdapter(view.getContext(),(JSONArray) listener));
 
                 },
                 error -> {

@@ -13,7 +13,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="24dp"
-        android:text="Fecha del pedido: 00/00/0000"
+        android:text="@string/detail_order_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:text="Ultima actualizacion: 00/00/0000 - 00:00pm"
+        android:text="@string/detail_order_updated"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_order_date" />
@@ -45,13 +45,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Estado: " />
+            android:text="@string/detail_order_state_label" />
 
         <TextView
             android:id="@+id/tv_order_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pendiente" />
+            android:text="@string/detail_order_state" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <ProgressBar
@@ -88,7 +88,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
-        android:text="Subtotal: $99.99"
+        android:text="@string/detail_order_subTotal"
         app:layout_constraintBottom_toTopOf="@+id/tv_order_total"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -100,8 +100,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
-        android:text="Total: $99.99"
-        android:textSize="22dp"
+        android:text="@string/detail_order_total"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_cancel_order"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +115,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        android:text="Cancelar pedido"
+        android:text="@string/detail_order_btn_cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

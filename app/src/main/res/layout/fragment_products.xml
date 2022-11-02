@@ -15,12 +15,13 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="#25D366"
         android:clickable="true"
-        android:contentDescription="Contacto"
+        android:contentDescription="@string/product_whatsapp_tooltip"
         android:foreground="@drawable/icons8_whatsapp_24"
-        android:tooltipText="Contacto"
+        android:tooltipText="@string/product_whatsapp_tooltip"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="true" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"

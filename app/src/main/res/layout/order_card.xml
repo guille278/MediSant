@@ -25,18 +25,18 @@
             android:id="@+id/tv_order_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Fecha de pedido: 00/00/0000" />
+            android:text="@string/order_date" />
         <TextView
             android:id="@+id/tv_order_total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total: $99.99" />
+            android:text="@string/order_total" />
 
         <TextView
             android:id="@+id/tv_order_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entregado"
+            android:text="@string/order_state"
             android:textColor="@color/teal_700" />
 
     </LinearLayout>

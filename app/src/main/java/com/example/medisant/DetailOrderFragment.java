@@ -67,38 +67,39 @@ public class DetailOrderFragment extends Fragment {
                 listener -> {
                     JSONObject detailOrder = (JSONObject) listener;
                     try {
-                        orderDate.setText("Fecha de pedido: " + detailOrder.getString("created_at"));
-                        orderUpdated.setText("Ultima Actualizacion: " + detailOrder.getString("updated_at"));
+
+                        orderDate.setText(getResources().getString(R.string.detail_order_date, detailOrder.getString("created_at")));
+                        orderUpdated.setText(getResources().getString(R.string.detail_order_updated, detailOrder.getString("updated_at")));
 
                         switch (detailOrder.getInt("status")) {
                             case 1:
                                 orderStatus.setTextColor(Color.parseColor("#0398fc"));
-                                orderStatus.setText("Recibido");
+                                orderStatus.setText(getResources().getString(R.string.detail_order_state, "Recibido"));
                                 progressBar.setProgress(20);
                                 break;
                             case 2:
                                 orderStatus.setTextColor(Color.parseColor("#fcd703"));
-                                orderStatus.setText("En camino");
+                                orderStatus.setText(getResources().getString(R.string.detail_order_state, "En camino"));
                                 progressBar.setProgress(50);
                                 break;
                             case 3:
                                 orderStatus.setTextColor(Color.parseColor("#FF018786"));
-                                orderStatus.setText("Entregado " + detailOrder.getString("delivered"));
+                                orderStatus.setText(getResources().getString(R.string.detail_order_state_delivered, detailOrder.getString("delivered")));
                                 progressBar.setProgress(100);
                                 btnCancel.setVisibility(View.GONE);
                                 break;
                             default:
                                 orderStatus.setTextColor(Color.parseColor("#d40222"));
-                                orderStatus.setText("Cancelado");
+                                orderStatus.setText(getResources().getString(R.string.detail_order_state_cancelled, detailOrder.getString("cancelled")));
                                 progressBar.setProgress(0);
                                 btnCancel.setVisibility(View.GONE);
                         }
-                        orderTotal.setText("Total: $" + detailOrder.getDouble("total"));
-                        double subtotal = 0;
+                        orderTotal.setText(getResources().getString(R.string.detail_order_total, detailOrder.getString("total")));
+                        int subtotal = 0;
                         for (int i = 0; i < detailOrder.getJSONArray("products").length(); i++) {
                             subtotal += detailOrder.getJSONArray("products").getJSONObject(i).getJSONObject("pivot").getDouble("quantity") * detailOrder.getJSONArray("products").getJSONObject(i).getJSONObject("pivot").getDouble("subtotal");
                         }
-                        orderSubtotal.setText("Subtotal :$" + subtotal);
+                        orderSubtotal.setText(getResources().getString(R.string.detail_order_subTotal, String.valueOf(subtotal)));
                         rvDetailOrder.setAdapter(new OrdersDetailAdapter(detailOrder.getJSONArray("products")));
                     } catch (JSONException e) {
                         e.printStackTrace();
