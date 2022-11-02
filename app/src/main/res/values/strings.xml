@@ -3,7 +3,6 @@
     <string name="login_form_email">Correo electrónico</string>
     <string name="login_form_password">Contraseña</string>
     <string name="login_form_button">Iniciar sesión</string>
-
     <string name="detail_order_date">Fecha del pedido: %1$s</string>
     <string name="detail_order_updated">Última actualización: %1$s</string>
     <string name="detail_order_state_label">Estado:\t</string>
@@ -13,18 +12,15 @@
     <string name="detail_order_subTotal">Subtotal: $%1$s</string>
     <string name="detail_order_total">Total: $%1$s</string>
     <string name="detail_order_btn_cancel">Cancelar pedido</string>
-
     <string name="order_date">Fecha del pedido: %1$s</string>
     <string name="order_total">Total: $%1$s</string>
     <string name="order_state">%1$s</string>
     <string name="order_state_delivered">Entregado %1$s</string>
-
     <string name="product_whatsapp_tooltip">Contacto</string>
-
     <string name="product_name">%1$s</string>
     <string name="product_short_desc">%1$s</string>
     <string name="product_price">$%1$s</string>
     <string name="product_available">Disponible: %1$s</string>
-
-
+    <string name="error_not_available">No contamos con suficiente producto en almacén</string>
+    <string name="error_empty_quantity">La cantidad de productos debe ser mayor a cero.</string>
 </resources>
