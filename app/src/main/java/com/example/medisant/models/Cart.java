@@ -5,43 +5,29 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.medisant.config.Config;
-import com.example.medisant.models.interfaces.ProductInterface;
+import com.example.medisant.models.interfaces.CartInterface;
+
+import org.json.JSONObject;
 
 import java.util.Map;
 
-public class Product implements ProductInterface {
-    private static final String END_POINT = "api/products";
-    private int id;
-    private int available;
+public class Cart implements CartInterface {
 
-    public int getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(int available) {
-        this.available = available;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private static final String END_POINT = "api/cart";
 
     @Override
     public JsonArrayRequest get(Response.Listener listener, Response.ErrorListener errorListener, String token) {
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,
-                Config.URL + Product.END_POINT,
+                Config.URL + END_POINT,
                 null,
                 listener,
                 errorListener
         ) {
             @Override
-            public Map<String, String> getHeaders() {
+            public Map<String, String> getHeaders() throws AuthFailureError {
                 return new Config().getHeaders(token);
             }
         };
@@ -49,16 +35,15 @@ public class Product implements ProductInterface {
     }
 
     @Override
-    public JsonObjectRequest findOne(Response.Listener listener, Response.ErrorListener errorListener, String token) {
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET,
-                Config.URL + Product.END_POINT + "/" + this.id,
-                null,
+    public JsonObjectRequest save(Response.Listener listener, Response.ErrorListener errorListener, String token, JSONObject data) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                Config.URL + END_POINT,
+                data,
                 listener,
                 errorListener
         ) {
             @Override
-            public Map<String, String> getHeaders() {
+            public Map<String, String> getHeaders() throws AuthFailureError {
                 return new Config().getHeaders(token);
             }
         };
