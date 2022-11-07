@@ -6,9 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".OrdersFragment"
     android:orientation="vertical">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_orders"
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_empty"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/order_card"/>
+        android:layout_height="match_parent"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="No hay pedidos disponibles"/>
+
+    <ProgressBar
+        android:layout_gravity="center"
+        android:id="@+id/progress_orders"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_orders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/order_card"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

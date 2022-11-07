@@ -13,11 +13,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +63,7 @@ public class CartFragment extends Fragment {
         Order order = new Order();
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
+        ProgressBar progressBar = view.findViewById(R.id.progress_cart);
         RecyclerView rvCart = view.findViewById(R.id.rv_cart);
         Button makeOrder = view.findViewById(R.id.btn_make_order);
         TextView orderTotal = view.findViewById(R.id.tv_order_total);
@@ -103,31 +106,36 @@ public class CartFragment extends Fragment {
                 alert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        JsonObjectRequest request1 = new JsonObjectRequest(
-                                Request.Method.POST,
-                                Config.URL + "api/orders",
-                                null,
-                                listener -> {
-                                    AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-                                    alert.setView(LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_confirmation, null));
-                                    alert.setPositiveButton("Ver pedidos", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            Navigation.findNavController(view).navigate(R.id.ordersFragment);
-                                        }
-                                    });
-                                    alert.create().show();
-                                },
-                                error -> {
-                                    Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                        ) {
+                        makeOrder.setEnabled(false);
+                        progressBar.setVisibility(View.VISIBLE);
+                        new Handler().postDelayed(new Runnable() {
                             @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                return new Config().getHeaders(token);
+                            public void run() {
+                                JsonObjectRequest request1 = new JsonObjectRequest(
+                                        Request.Method.POST,
+                                        Config.URL + "api/orders",
+                                        null,
+                                        listener -> {
+                                            progressBar.setVisibility(View.GONE);
+                                            AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+                                            alert.setView(LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_confirmation, null));
+                                            alert.setPositiveButton("Aceptar", null);
+                                            alert.create().show();
+                                            Navigation.findNavController(view).navigate(R.id.ordersFragment);
+                                        },
+                                        error -> {
+                                            Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                ) {
+                                    @Override
+                                    public Map<String, String> getHeaders() throws AuthFailureError {
+                                        return new Config().getHeaders(token);
+                                    }
+                                };
+                                queue.add(request1);
                             }
-                        };
-                        queue.add(request1);
+                        }, 3000);
+
                     }
                 });
                 alert.setNegativeButton("Cancelar", null);

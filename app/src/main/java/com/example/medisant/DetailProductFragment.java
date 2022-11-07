@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.medisant.config.Config;
 import com.example.medisant.models.Cart;
 import com.example.medisant.models.Product;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -55,6 +56,7 @@ public class DetailProductFragment extends Fragment {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
         token = sharedPreferences.getString("token", "");
         Product product = new Product();
+        ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_detail_products);
         ImageView imageView = view.findViewById(R.id.iv_product_image);
         TextView productName = view.findViewById(R.id.tv_product_name);
         TextView productShortDesc = view.findViewById(R.id.tv_product_short_description);
@@ -63,6 +65,7 @@ public class DetailProductFragment extends Fragment {
         TextView productAvailable = view.findViewById(R.id.tv_product_available);
         Button btnAgregarCarrito = view.findViewById(R.id.btn_agregar_carrito);
         EditText quantity = view.findViewById(R.id.et_quantity);
+        shimmerFrameLayout.startShimmer();
 
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
@@ -79,6 +82,14 @@ public class DetailProductFragment extends Fragment {
                         productLongDesc.setText(data.getString("long_description"));
                         productPrice.setText("Precio: " + NumberFormat.getCurrencyInstance(Locale.US).format(data.getDouble("price")));
                         productAvailable.setText(view.getResources().getString(R.string.product_available, data.getString("available")));
+                        if (data.getInt("available") == 0){
+                            btnAgregarCarrito.setEnabled(false);
+                            btnAgregarCarrito.setText("Producto no disponible por el momento.");
+                            quantity.setEnabled(false);
+                        }
+
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
