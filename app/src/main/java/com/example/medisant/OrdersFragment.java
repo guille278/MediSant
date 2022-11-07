@@ -80,10 +80,12 @@ public class OrdersFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                progressBar.setVisibility(View.VISIBLE);
                 JsonArrayRequest request = new Order().get(
                         listener -> {
                             JSONArray data = (JSONArray) listener;
                             swipeRefreshLayout.setRefreshing(false);
+                            progressBar.setVisibility(View.GONE);
                             rvOrders.setAdapter(new OrdersAdapter(view.getContext(), data));
                         },
                         error -> {
