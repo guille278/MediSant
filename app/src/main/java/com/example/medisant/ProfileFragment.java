@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,10 +91,10 @@ public class ProfileFragment extends Fragment {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("token", Context.MODE_PRIVATE);
         Button logout = view.findViewById(R.id.btn_logout);
         Button edit = view.findViewById(R.id.btn_user_edit);
-        TextView userName = view.findViewById(R.id.tv_user_name);
-        TextView userEmail = view.findViewById(R.id.tv_user_email);
-        TextView userAddress = view.findViewById(R.id.tv_user_address);
-        TextView userCompany = view.findViewById(R.id.tv_user_company_name);
+        EditText userName = view.findViewById(R.id.et_user_name);
+        EditText userEmail = view.findViewById(R.id.et_user_email);
+        EditText userAddress = view.findViewById(R.id.et_user_address);
+        EditText userCompany = view.findViewById(R.id.et_user_company_name);
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
 
         JsonObjectRequest request = new JsonObjectRequest(
