@@ -52,10 +52,8 @@ public class OrdersFragment extends Fragment {
         token = sharedPreferences.getString("token", "");
         RecyclerView rvOrders = view.findViewById(R.id.rv_orders);
         TextView empty = view.findViewById(R.id.tv_empty);
-        //ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.shimmer_orders);
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         ProgressBar progressBar = view.findViewById(R.id.progress_orders);
-        //shimmerFrameLayout.startShimmer();
         RequestQueue queue = Volley.newRequestQueue(view.getContext());
         JsonArrayRequest request = new Order().get(
                 listener -> {
@@ -66,8 +64,6 @@ public class OrdersFragment extends Fragment {
                     } else {
                         empty.setVisibility(View.VISIBLE);
                     }
-                    //shimmerFrameLayout.stopShimmer();
-                    //shimmerFrameLayout.setVisibility(View.GONE);
 
 
                 },
@@ -89,8 +85,6 @@ public class OrdersFragment extends Fragment {
                             JSONArray data = (JSONArray) listener;
                             swipeRefreshLayout.setRefreshing(false);
                             rvOrders.setAdapter(new OrdersAdapter(view.getContext(), data));
-                            //shimmerFrameLayout.stopShimmer();
-                            //shimmerFrameLayout.setVisibility(View.GONE);
                         },
                         error -> {
                             Toast.makeText(view.getContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
