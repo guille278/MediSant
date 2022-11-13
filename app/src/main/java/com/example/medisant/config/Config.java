@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Config {
-    private static final String HOST = "192.168.1.78";
+    private static final String HOST = "192.168.1.74";
     public static final String URL = "http://"+HOST+"/proyecto-9no-web/medisant-admin/public/";
+
+    //public static final String URL = "https://dev.medisant.mx/";
 
     public Map<String, String> getHeaders(String token){
         Map<String, String> headers = new HashMap<>();
