@@ -34,6 +34,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.NumberFormat;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class DetailOrderFragment extends Fragment {
@@ -70,35 +74,40 @@ public class DetailOrderFragment extends Fragment {
                     JSONObject detailOrder = (JSONObject) listener;
                     try {
 
-                        orderDate.setText(getResources().getString(R.string.detail_order_date, detailOrder.getString("created_at")));
-                        orderUpdated.setText(getResources().getString(R.string.detail_order_updated, detailOrder.getString("updated_at")));
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            OffsetDateTime createdAt = OffsetDateTime.ofInstant(Instant.parse(detailOrder.getString("created_at")), ZoneId.systemDefault());
+                            OffsetDateTime updatedAt = OffsetDateTime.ofInstant(Instant.parse(detailOrder.getString("updated_at")), ZoneId.systemDefault());
 
-                        switch (detailOrder.getInt("status")) {
-                            case 1:
-                                orderStatus.setTextColor(Color.parseColor("#0398fc"));
-                                orderStatus.setText(getResources().getString(R.string.detail_order_state, "Recibido"));
-                                progressBar.setProgress(20);
-                                btnCancel.setVisibility(View.VISIBLE);
-                                break;
-                            case 2:
-                                orderStatus.setTextColor(Color.parseColor("#fcd703"));
-                                orderStatus.setText(getResources().getString(R.string.detail_order_state, "En camino"));
-                                progressBar.setProgress(50);
-                                btnCancel.setVisibility(View.VISIBLE);
-                                break;
-                            case 3:
-                                orderStatus.setTextColor(Color.parseColor("#FF018786"));
-                                orderStatus.setText(getResources().getString(R.string.detail_order_state_delivered, detailOrder.getString("delivered")));
-                                progressBar.setProgress(100);
-                                break;
-                            default:
-                                orderStatus.setTextColor(Color.parseColor("#d40222"));
-                                orderStatus.setText(getResources().getString(R.string.detail_order_state_cancelled, detailOrder.getString("cancelled")));
-                                progressBar.setProgress(0);
+                            orderDate.setText(getResources().getString(R.string.detail_order_date, DateTimeFormatter.ofPattern("dd MMMM yyyy - hh:mm:ssa").format(createdAt)));
+                            orderUpdated.setText(getResources().getString(R.string.detail_order_updated, DateTimeFormatter.ofPattern("dd MMMM yyyy").format(updatedAt)));
 
+                            switch (detailOrder.getInt("status")) {
+                                case 1:
+                                    orderStatus.setTextColor(Color.parseColor("#0398fc"));
+                                    orderStatus.setText(getResources().getString(R.string.detail_order_state, "Recibido"));
+                                    progressBar.setProgress(20);
+                                    btnCancel.setVisibility(View.VISIBLE);
+                                    break;
+                                case 2:
+                                    orderStatus.setTextColor(Color.parseColor("#fcd703"));
+                                    orderStatus.setText(getResources().getString(R.string.detail_order_state, "En camino"));
+                                    progressBar.setProgress(50);
+                                    btnCancel.setVisibility(View.VISIBLE);
+                                    break;
+                                case 3:
+                                    orderStatus.setTextColor(Color.parseColor("#FF018786"));
+                                    orderStatus.setText(getResources().getString(R.string.detail_order_state_delivered, DateTimeFormatter.ofPattern("dd MMMM yyyy - hh:mm:ssa").format(OffsetDateTime.ofInstant(Instant.parse(detailOrder.getString("delivered")), ZoneId.systemDefault()))));
+                                    progressBar.setProgress(100);
+                                    break;
+                                default:
+                                    orderStatus.setTextColor(Color.parseColor("#d40222"));
+                                    orderStatus.setText(getResources().getString(R.string.detail_order_state_cancelled, DateTimeFormatter.ofPattern("dd MMMM yyyy k - hh:mm:ssa").format(OffsetDateTime.ofInstant(Instant.parse(detailOrder.getString("cancelled")), ZoneId.systemDefault()))));
+                                    progressBar.setProgress(0);
+
+                            }
+                            orderTotal.setText(getResources().getString(R.string.detail_order_total, NumberFormat.getCurrencyInstance(Locale.US).format(detailOrder.getDouble("total"))));
+                            rvDetailOrder.setAdapter(new OrdersDetailAdapter(detailOrder.getJSONArray("products")));
                         }
-                        orderTotal.setText(getResources().getString(R.string.detail_order_total, NumberFormat.getCurrencyInstance(Locale.US).format(detailOrder.getDouble("total"))));
-                        rvDetailOrder.setAdapter(new OrdersDetailAdapter(detailOrder.getJSONArray("products")));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

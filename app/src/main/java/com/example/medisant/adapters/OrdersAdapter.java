@@ -25,6 +25,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -37,7 +38,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
     public OrdersAdapter(Context context, JSONArray orders) {
         this.orders = orders;
-        this.mContext=context;
+        this.mContext = context;
     }
 
     public class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -75,6 +76,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 OffsetDateTime time = OffsetDateTime.ofInstant(Instant.parse(this.orders.getJSONObject(position).getString("created_at")), ZoneId.systemDefault());
+                
                 holder.orderDate.setText(mContext.getString(R.string.order_date, DateTimeFormatter.ofPattern("dd MMMM yyyy").format(time)));
                 holder.orderTotal.setText(mContext.getString(R.string.order_total, NumberFormat.getCurrencyInstance(Locale.US).format(this.orders.getJSONObject(position).getDouble("total"))));
                 switch (this.orders.getJSONObject(position).getInt("status")) {
@@ -87,8 +89,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                         holder.orderStatus.setText(mContext.getString(R.string.order_state, "En camino"));
                         break;
                     case 3:
+                        OffsetDateTime delivered = OffsetDateTime.ofInstant(Instant.parse(this.orders.getJSONObject(position).getString("delivered")), ZoneId.systemDefault());
                         holder.orderStatus.setTextColor(Color.parseColor("#FF018786"));
-                        holder.orderStatus.setText(mContext.getString(R.string.order_state_delivered, this.orders.getJSONObject(position).getString("delivered")));
+                        holder.orderStatus.setText(mContext.getString(R.string.order_state_delivered, DateTimeFormatter.ofPattern("dd MMMM yyyy").format(delivered)));
                         break;
                     default:
                         holder.orderStatus.setTextColor(Color.parseColor("#d40222"));
