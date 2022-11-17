@@ -70,7 +70,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         try {
-            Picasso.get().load(Config.URL + productsList.getJSONObject(position).getString("image")).into(holder.productImage);
+            Picasso.get().load(Config.URL+"storage/"+ productsList.getJSONObject(position).getString("image")).into(holder.productImage);
             holder.productName.setText(productsList.getJSONObject(position).getString("name"));
             holder.productShortDesc.setText(productsList.getJSONObject(position).getString("short_description"));
             holder.productPrice.setText(NumberFormat.getCurrencyInstance(Locale.US).format(productsList.getJSONObject(position).getDouble("price")));

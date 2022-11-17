@@ -76,7 +76,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             Button btnDelete = v.findViewById(R.id.btn_dialog_delete);
             Button btnUpdate = v.findViewById(R.id.btn_dialog_update);
             try {
-                Picasso.get().load(Config.URL + items.getJSONObject(getAdapterPosition()).getString("image")).into(dialogProductImage);
+                Picasso.get().load(Config.URL+"storage/"+ items.getJSONObject(getAdapterPosition()).getString("image")).into(dialogProductImage);
                 dialogProductName.setText(items.getJSONObject(getAdapterPosition()).getString("name"));
                 dialogProductShortDesc.setText(items.getJSONObject(getAdapterPosition()).getString("short_description"));
                 dialogProductPrice.setText(NumberFormat.getCurrencyInstance().format(items.getJSONObject(getAdapterPosition()).getDouble("price")));

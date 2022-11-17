@@ -76,7 +76,7 @@ public class DetailProductFragment extends Fragment {
                     try {
                         product.setId(data.getInt("id"));
                         product.setAvailable(data.getInt("available"));
-                        Picasso.get().load(Config.URL + data.getString("image")).into(imageView);
+                        Picasso.get().load(Config.URL+"storage/"+ data.getString("image")).into(imageView);
                         productName.setText(data.getString("name"));
                         productShortDesc.setText(data.getString("short_description"));
                         productLongDesc.setText(data.getString("long_description"));
