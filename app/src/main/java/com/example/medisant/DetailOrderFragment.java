@@ -96,12 +96,12 @@ public class DetailOrderFragment extends Fragment {
                                     break;
                                 case 3:
                                     orderStatus.setTextColor(Color.parseColor("#FF018786"));
-                                    orderStatus.setText(getResources().getString(R.string.detail_order_state_delivered, DateTimeFormatter.ofPattern("dd MMMM yyyy - hh:mm:ssa").format(OffsetDateTime.ofInstant(Instant.parse(detailOrder.getString("delivered")), ZoneId.systemDefault()))));
+                                    orderStatus.setText(getResources().getString(R.string.detail_order_state_delivered, DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm:ssa").format(OffsetDateTime.ofInstant(Instant.parse(detailOrder.getString("delivered")), ZoneId.systemDefault()))));
                                     progressBar.setProgress(100);
                                     break;
                                 default:
                                     orderStatus.setTextColor(Color.parseColor("#d40222"));
-                                    orderStatus.setText(getResources().getString(R.string.detail_order_state_cancelled, DateTimeFormatter.ofPattern("dd MMMM yyyy k - hh:mm:ssa").format(OffsetDateTime.ofInstant(Instant.parse(detailOrder.getString("cancelled")), ZoneId.systemDefault()))));
+                                    orderStatus.setText(getResources().getString(R.string.detail_order_state_cancelled, DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm:ssa").format(OffsetDateTime.ofInstant(Instant.parse(detailOrder.getString("cancelled")), ZoneId.systemDefault()))));
                                     progressBar.setProgress(0);
 
                             }
