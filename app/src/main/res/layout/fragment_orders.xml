@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:textStyle="bold"
         android:gravity="center"
-        android:text="No hay pedidos disponibles"/>
+        android:text="No hay órdenes disponibles"/>
 
     <ProgressBar
         android:layout_gravity="center"

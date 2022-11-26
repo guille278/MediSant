@@ -208,7 +208,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.CartViewHolder holder, int position) {
         try {
-            Picasso.get().load(Config.URL + items.getJSONObject(position).getString("image")).into(holder.productImage);
+            Picasso.get().load(Config.URL+"storage/" + items.getJSONObject(position).getString("image")).into(holder.productImage);
             holder.productName.setText(items.getJSONObject(position).getString("name"));
             holder.productShortDesc.setText(items.getJSONObject(position).getString("short_description"));
             holder.productPrice.setText("$" + items.getJSONObject(position).getDouble("price"));
