@@ -55,9 +55,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descripcion del producto"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="Descripción del producto"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_product_short_description"

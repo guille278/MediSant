@@ -23,4 +23,7 @@
     <string name="product_available">Disponible: %1$s</string>
     <string name="error_not_available">No contamos con suficiente producto en almacén</string>
     <string name="error_empty_quantity">La cantidad de productos debe ser mayor a cero.</string>
+    <string name="main_menu_catalog">Catálogo</string>
+    <string name="main_menu_orders">Órdenes</string>
+    <string name="main_menu_profile">Perfil</string>
 </resources>
